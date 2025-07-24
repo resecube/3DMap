@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import sys
 sys.path.append('../..')
-from dataset.constants import SCANNET_IDS
+from evaluation.constants import SCANNET_IDS
 
 raw_data_dir = '../../data/scannet/raw/scans'
 gt_dir = '../../data/scannet/gt'
@@ -38,6 +38,7 @@ def point_indices_from_group(seg_indices, group, labels_pd):
 
     # get points, where segment indices (points labelled with segment ids) are in the group segment list
     point_IDs = np.where(np.isin(seg_indices, group_segments))
+
     return point_IDs[0], label_id
 
 def handle_process(scene_path, output_path, labels_pd):
@@ -46,12 +47,7 @@ def handle_process(scene_path, output_path, labels_pd):
     aggregations_file = os.path.join(scene_path, f'{scene_id}{AGGREGATIONS_FILE_PFIX}')
 
     output_gt_file = os.path.join(output_path, f'{scene_id}.txt')
-    if os.path.exists(output_gt_file):
-        return
-    if not os.path.exists(segments_file) or not os.path.exists(aggregations_file):
-        print(f'Missing files for {scene_id}')
-        return
-    
+ 
     # Load segments file
     with open(segments_file) as f:
         segments = json.load(f)
