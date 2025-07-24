@@ -1,0 +1,19 @@
+defaults:
+  - dataset: Matterport3D
+  - splits: matterport3d_test
+
+seq_name: 8194nk5LbLH
+debug: True
+project_root: /home/mobisense/openmap
+data_root: ${project_root}/data/${seq_name}
+device: cpu
+
+hydra:
+  job:
+    chdir: True
+  run:
+    dir: ${project_root}/outputs/${seq_name}
+
+OPENAI_KEY: sk-3d310270db5447de938fb4822364164f
+base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+model: deepseek-v3

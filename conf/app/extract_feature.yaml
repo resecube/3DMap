@@ -1,0 +1,5 @@
+default:
+  - base_config
+  - _self_
+
+clip_features_save_path: ${seq_name}/open_vocabulary_features.pth

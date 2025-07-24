@@ -1,0 +1,8 @@
+default:
+  - base_config
+  - _self_
+
+ovsam_model_path: ${project_root}/third_party/ovsam/sam_r50x16_fpn.py
+
+ovsam_src_root_path: /media/mobisense/Elements/resources/dataset/ScanNet/v2/scans
+ovsam_save_feature_path: mask_features.pkl

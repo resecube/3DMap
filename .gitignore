@@ -1,0 +1,16 @@
+/data/
+ckpt/
+/third_party/ovsam/*.png
+*.pyc
+*.pyo
+*.log
+/splits/
+/outputs/
+/multirun/
+/evaluation/eval
+/test/
+/evalutaion/eval
+/conf/config.yaml
+/evaluation/eval_insParsing/*
+/.vscode
+__pycache__/

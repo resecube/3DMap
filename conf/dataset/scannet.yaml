@@ -1,0 +1,8 @@
+default:
+  - _self_
+name: scannet
+step: 10
+data_root: ${project_root}/data/ScanNet/v2/scans
+target_labels: SCANNET_LABELS
+target_label_descriptions: SCANNET_LABELS_DESCRIPTION
+target_ids: SCANNET_IDS

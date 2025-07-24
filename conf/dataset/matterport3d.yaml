@@ -1,0 +1,8 @@
+default:
+  - _self_
+name: matterport3d
+step: 1
+data_root: ${project_root}/data/matterport3d/scans
+target_labels: MATTERPORT_LABELS
+target_label_descriptions: MATTERPORT_LABEL_DESCRIPTIONS
+target_ids: MATTERPORT_IDS

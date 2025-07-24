@@ -1,0 +1,6 @@
+default:
+  - base_config
+  - _self_
+
+instances_save_path: ${seq_name}/instances.pth
+semantic_info_path: semantic_info
