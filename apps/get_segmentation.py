@@ -50,7 +50,7 @@ def setup_cfg(cfg):
     cfg.freeze()
     return cfg
 
-
+# python -m apps.get_segmentation 
 @hydra.main(
     config_path="../conf", config_name="app/get_segmentation.yaml", version_base="1.3"
 )

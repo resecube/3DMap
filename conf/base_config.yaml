@@ -1,12 +1,12 @@
 defaults:
-  - dataset: Matterport3D
-  - splits: matterport3d_test
+  - dataset: scannet
+  - splits: scannet_test
 
-seq_name: 8194nk5LbLH
+seq_name: scene0011_00
 debug: True
-project_root: /home/mobisense/openmap
+project_root: /root/autodl-tmp/3DMap
 data_root: ${project_root}/data/${seq_name}
-device: cpu
+device: gpu
 
 hydra:
   job:
