@@ -52,10 +52,11 @@ def setup_cfg(cfg):
 
 # python -m apps.get_segmentation 
 @hydra.main(
-    config_path="../conf", config_name="app/get_segmentation.yaml", version_base="1.3"
+    config_path="../conf", config_name="get_segmentation.yaml", version_base=None
 )
 def get_segmentations(args: DictConfig):
     mp.set_start_method("spawn", force=True)
+    print(OmegaConf.to_yaml(args))
     cfg = setup_cfg(args)
     demo = VisualizationDemo(cfg)
 

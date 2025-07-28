@@ -1,4 +1,4 @@
-default:
+defaults:
   - base_config
   - _self_
 
@@ -17,3 +17,4 @@ contained_threshold: 0.8
 point_filter_threshold: 0.5
 
 object_dict_path: ${seq_name}/object_dict.npy
+semantic_info_path: semantic_info

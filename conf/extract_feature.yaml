@@ -1,5 +1,6 @@
-default:
+defaults:
   - base_config
   - _self_
 
 clip_features_save_path: ${seq_name}/open_vocabulary_features.pth
+object_dict_path: ${seq_name}/object_dict.npy

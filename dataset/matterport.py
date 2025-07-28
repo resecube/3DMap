@@ -19,7 +19,7 @@ class MatterportDataset:
         
         # output
         self.segmentation_dir = f'{self.root}/output/mask/'
-        self.object_dict_dir = f'{self.root}/output/object_dict.npy'
+        self.object_dict_dir = f'{self.root}/object_dict.npy'
 
         self.depth_scale = 4000.0 # (0.25mm per unit) 1u = 1/4000 m
         self.image_size = (1280, 1024)

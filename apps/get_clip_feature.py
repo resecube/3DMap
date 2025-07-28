@@ -5,7 +5,6 @@ import torch
 from tqdm import tqdm
 from dataset.scannet import ScanNetDataset
 from dataset.matterport import MatterportDataset
-from semantics.get_openvoc_features import get_clip_features
 from utils.ovutils import load_clip
 import hydra
 from omegaconf import DictConfig, OmegaConf
@@ -176,7 +175,7 @@ def get_clip_features(cfg, object_dict, dataset, model, preprocess):
 
 
 @hydra.main(
-    config_path="../conf", config_name="app/extract_feature.yaml", version_base="1.3"
+    config_path="../conf", config_name="extract_feature.yaml", version_base="1.3"
 )
 def get_clip_feature(cfg: DictConfig):
     clip_model, preprocess = load_clip()

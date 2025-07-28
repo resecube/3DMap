@@ -186,7 +186,7 @@ def load_clip():
     model, _, preprocess = open_clip.create_model_and_transforms(
         "ViT-H-14", pretrained="laion2b_s32b_b79k"
     )
-    # model = model.cuda()
+    model = model.cuda()
     model.eval()
     print(f"[INFO]", " finish loading CLIP model...")
     return model, preprocess

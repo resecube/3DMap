@@ -16,7 +16,7 @@ from dataset.constants import (
 
 
 @hydra.main(
-    config_path="../conf", config_name="app/get_label_feature.yaml", version_base="1.3"
+    config_path="../conf", config_name="get_label_feature.yaml", version_base="1.3"
 )
 def extract_text_feature(cfg: DictConfig):
     labels = globals()[cfg.dataset.target_labels]
@@ -33,7 +33,7 @@ def extract_text_feature(cfg: DictConfig):
         text_features_dict[label] = text_features[i]
         assert label in description, f"{label} not in {description}"
 
-    torch.save(text_features_dict, cfg.label_feature_save_path)
+    torch.save(text_features_dict, cfg.dataset.label_feature_save_path)
 
 
 if __name__ == "__main__":

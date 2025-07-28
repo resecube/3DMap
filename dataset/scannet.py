@@ -18,8 +18,8 @@ class ScanNetDataset:
         self.mesh_path = self.point_cloud_path
         self.extrinsics_dir = f"{self.root}/pose"
         self.intrinsic_dir = f"{self.root}/intrinsic"
-        self.feature_path = f"{self.root}/output/mask_features.pkl"
-        self.label_path = f"{self.root}/output/mask_labels.pkl"
+        self.feature_path = f"{self.root}/mask_features.pkl"
+        self.label_path = f"{self.root}/mask_labels.pkl"
 
         self.depth_scale = 1000.0
         self.image_size = (640, 480)
@@ -95,7 +95,7 @@ class ScanNetDataset:
             self.mesh = o3d.io.read_point_cloud(self.point_cloud_path)
             vertices = np.asarray(self.mesh.points)
         else:
-            vertices = np.asarray(self.mesh.vertices)
+            vertices = np.asarray(self.mesh.points)
         return vertices
 
     def get_mesh(self):

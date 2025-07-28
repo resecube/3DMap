@@ -1,9 +1,9 @@
-default:
+defaults:
   - base_config
   - _self_
 
 config_file: ${project_root}/third_party/detectron2/projects/CropFormer/configs/entityv2/entity_segmentation/mask2former_hornet_3x.yaml
-root: ${project_root}/data/ScanNet/v2/scans
+root: ${project_root}/data/scannet/processed
 image_path_pattern: "color/*0.jpg"
 confidence_threshold: 0.5
 opts:

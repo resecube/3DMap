@@ -8,7 +8,7 @@ from dataset import ScanNetDataset, MatterportDataset
 from aggregation.graph import Graph
 
 
-@hydra.main(config_path="../conf", config_name="app/setup_graph", version_base="1.3")
+@hydra.main(config_path="../conf", config_name="setup_graph.yaml", version_base="1.3")
 def setup_graph(cfg):
     for seq_name in tqdm(cfg.splits.seq_name_list):
         cfg.seq_name = seq_name
@@ -28,3 +28,6 @@ def setup_graph(cfg):
         }
         graph = Graph(cfg, mask_features, dataset)
         np.save(cfg.object_dict_path, graph.object_dict, allow_pickle=True)
+
+if __name__ == "__main__":
+    setup_graph()

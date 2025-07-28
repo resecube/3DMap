@@ -18,7 +18,7 @@ import os
 
 
 @hydra.main(
-    config_path="../conf", config_name="app/export_instances.yaml", version_base="1.3"
+    config_path="../conf", config_name="export_instances.yaml", version_base="1.3"
 )
 def export_instances(cfg: DictConfig):
     target_labels = globals()[cfg.dataset.target_labels]
@@ -32,7 +32,7 @@ def export_instances(cfg: DictConfig):
         )
         object_dict = np.load(cfg.object_dict_path, allow_pickle=True).item()
         feature_dict = torch.load(cfg.clip_features_save_path)
-        label_features = torch.load(cfg.label_feature_save_path)
+        label_features = torch.load(cfg.dataset.label_feature_save_path)
         instances = construct_instances(
             object_dict,
             feature_dict,
@@ -42,3 +42,6 @@ def export_instances(cfg: DictConfig):
             target_ids,
         )
         torch.save(instances, cfg.instances_save_path)
+
+if __name__ == "__main__": 
+    export_instances()
