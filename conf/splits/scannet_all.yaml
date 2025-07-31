@@ -1,4 +1,4 @@
-default:
+defaults:
   - _self_
 
 seq_name_list:

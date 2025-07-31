@@ -7,13 +7,19 @@ from itertools import repeat
 import numpy as np
 import pandas as pd
 import sys
-sys.path.append('../..')
-from evaluation.constants import SCANNET_IDS
+sys.path.append('../../..')
+from dataset.constants import SCANNET_IDS
 
-raw_data_dir = '../../data/scannet/raw/scans'
-gt_dir = '../../data/scannet/gt'
-label_map_file = '../../data/scannet/raw/scannetv2-labels.combined.tsv'
-split_file_path = '../../splits/scannet.txt'
+# raw_data_dir = '../../data/scannet/raw/scans'
+# gt_dir = '../../data/scannet/gt'
+# label_map_file = '../../data/scannet/raw/scannetv2-labels.combined.tsv'
+# split_file_path = '../../splits/scannet.txt'
+
+raw_data_dir = '/root/autodl-tmp/scannet'
+gt_dir = '/root/autodl-tmp/3DMap/outputs/scannet_outputs/gt'
+label_map_file = '/root/autodl-tmp/scannet/scannetv2-labels.combined.tsv'
+split_file_path = '../../../splits/scannet.txt'
+
 
 CLOUD_FILE_PFIX = '_vh_clean_2'
 SEGMENTS_FILE_PFIX = '.0.010000.segs.json'

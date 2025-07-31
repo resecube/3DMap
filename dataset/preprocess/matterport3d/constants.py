@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 category_mapping = pd.read_csv(
-    "/home/mobisense/openmap/dataset/preprocess/matterport3d/category_mapping.tsv",
+    "/root/autodl-tmp/3DMap/dataset/preprocess/matterport3d/category_mapping.tsv",
     sep="\t",
     header=0,
 )

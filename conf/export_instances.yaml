@@ -2,8 +2,4 @@ defaults:
   - base_config
   - _self_
 
-instances_save_path: ${seq_name}/instances.pth
 semantic_info_path: semantic_info
-object_dict_path: ${seq_name}/object_dict.npy
-clip_features_save_path: ${seq_name}/open_vocabulary_features.pth
-

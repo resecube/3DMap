@@ -56,7 +56,6 @@ def setup_cfg(cfg):
 )
 def get_segmentations(args: DictConfig):
     mp.set_start_method("spawn", force=True)
-    print(OmegaConf.to_yaml(args))
     cfg = setup_cfg(args)
     demo = VisualizationDemo(cfg)
 
@@ -65,7 +64,7 @@ def get_segmentations(args: DictConfig):
         print(f"Processing sequence {i+1}/{len(seq_name_list)}: {seq_name}")
         print(f"Image path pattern: {args.image_path_pattern}")
         seq_dir = os.path.join(args.root, seq_name)
-        output_dir = os.path.join(seq_dir, "output/mask")
+        output_dir = os.path.join(args.output_dir, f'{seq_name}/mask')
 
         print(f"Sequence directory: {seq_dir}")
         image_list = sorted(glob.glob(os.path.join(seq_dir, args.image_path_pattern)))

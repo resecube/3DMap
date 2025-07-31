@@ -145,21 +145,19 @@ def get_semantic_info(
         binary_mask = np.zeros(scene_points_num, dtype=bool)
         binary_mask[object["point_ids"]] = True
         pred_binary_masks.append(binary_mask)
-        if cfg.use_repre:
-            object_features = [
-                mask_features[frame_id][mask_id - 1]
-                for (frame_id, mask_id, _) in object["repre_mask_list"]
-            ]
-        else:
-            object_features = [
-                mask_features[frame_id][mask_id - 1]
-                for (frame_id, mask_id, _) in object["mask_list"]
-            ]
-        object_features = np.stack(object_features)
-        repre_features.append(get_repre_feature(object_features, cfg))
-    repre_features = np.stack(repre_features)
+
+        repre_mask_list = object["repre_mask_list"]
+        object_features_list = [
+            mask_features[f"{mask_info[0]}_{mask_info[1]}"]
+            for mask_info in repre_mask_list
+        ]
+        feature = torch.stack(object_features_list)
+        object_feature = torch.mean(feature, dim=0)
+        repre_features.append(object_feature)
+    repre_features = torch.stack(repre_features)
+    label_features = torch.stack(list(target_label_features.values())).cuda()
     pred_labels, pred_confidences = predict_labels(
-        repre_features, target_label_features, target_labels
+        repre_features, label_features, target_labels
     )
     pred_binary_masks = np.stack(pred_binary_masks, axis=1)
     pred_classes = [label2id[label] for label in pred_labels]

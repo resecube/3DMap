@@ -3,6 +3,7 @@ defaults:
 name: scannet
 step: 10
 data_root: ${project_root}/data/scannet/processed
+output_dir: /root/autodl-tmp/3DMap/outputs/scannet_outputs
 target_labels: SCANNET_LABELS
 target_label_descriptions: SCANNET_LABELS_DESCRIPTION
 target_ids: SCANNET_IDS

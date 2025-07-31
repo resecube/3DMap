@@ -171,7 +171,7 @@ def get_clip_features(cfg, object_dict, dataset, model, preprocess):
                 feature_dict[f"{frame_ids[i]}_{mask_ids[i]}"] = image_features[
                     CROP_SCALES * i : CROP_SCALES * (i + 1)
                 ].mean(axis=0)
-            torch.save(feature_dict, cfg.clip_features_save_path)
+            torch.save(feature_dict, dataset.feature_path)
 
 
 @hydra.main(
@@ -182,11 +182,11 @@ def get_clip_feature(cfg: DictConfig):
     for seq_name in tqdm(cfg.splits.seq_name_list):
         cfg.seq_name = seq_name
         dataset = (
-            ScanNetDataset(cfg.dataset.data_root, cfg.seq_name)
+            ScanNetDataset(cfg.dataset.data_root, cfg.seq_name, cfg.dataset.output_dir)
             if cfg.dataset.name == "scannet"
             else MatterportDataset(cfg.dataset.data_root, cfg.seq_name)
         )
-        object_dict = np.load(cfg.object_dict_path, allow_pickle=True).item()
+        object_dict = np.load(dataset.object_dict_dir, allow_pickle=True).item()
         get_clip_features(cfg, object_dict, dataset, clip_model, preprocess)
 
 

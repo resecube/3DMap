@@ -111,7 +111,7 @@ def get_ovsam_features(cfg: DictConfig):
             continue
         if cfg.debug:
             print(f"Processing scene {scene_dir.name}")
-        dataset = ScanNetDataset(str(data_root), scene_dir.name)
+        dataset = ScanNetDataset(str(data_root), scene_dir.name, cfg.dataset.output_dir)
         frame_list = dataset.get_frame_list(cfg.dataset.step)
         result_dict = {}
         frame_list = tqdm(frame_list)
@@ -122,7 +122,7 @@ def get_ovsam_features(cfg: DictConfig):
                 rgb_image, mask_image
             )
             result_dict[frame_id] = semantic_pred.cpu().numpy()
-        with open(str(scene_dir / cfg.ovsam_save_feature_path), "wb") as f:
+        with open(f'{dataset.feature_path}', "wb") as f:
             pickle.dump(result_dict, f)
         if cfg.debug:
             print(f"Scene {scene_dir.name} done.")

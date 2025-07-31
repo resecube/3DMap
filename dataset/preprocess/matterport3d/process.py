@@ -5,10 +5,13 @@ import tqdm
 import json
 from constants import RAW_TO_NYU, MATTERPORT_VALID_IDS
 
-raw_data_dir = "/home/mobisense/openmap/data/matterport3d/"
-gt_dir = "/home/mobisense/openmap/data/matterport3d/gt/"
-split_file_path = "/home/mobisense/openmap/dataset/preprocess/matterport3d/splits.txt"
+# raw_data_dir = "/home/mobisense/openmap/data/matterport3d/"
+# gt_dir = "/home/mobisense/openmap/data/matterport3d/gt/"
+# split_file_path = "/home/mobisense/openmap/dataset/preprocess/matterport3d/splits.txt"
 
+raw_data_dir = "/root/autodl-tmp/mp3d9"
+gt_dir = "/root/autodl-tmp/3DMap/outputs/mp3d9_outputs/gt/"
+split_file_path = '/root/autodl-tmp/3DMap/splits/mp3d9.txt'
 
 def load_instance_json(filepath):
     with open(filepath, "r") as f:

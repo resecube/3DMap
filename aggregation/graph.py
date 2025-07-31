@@ -134,13 +134,12 @@ class Graph:
         possible_nodes_pairs = torch.where(
             torch.triu(possible_connect_area, diagonal=1)
         )  
-
-        node_features = torch.stack(
-            [
+        node_features = torch.stack([
                 self.frame_mask_feature_list[node.repre_mask[0]][node.repre_mask[1] - 1]
                 for node in self.nodes
             ]
         ).cuda()
+            
 
         if len(possible_nodes_pairs[0]) > 0:
             features_i = node_features[possible_nodes_pairs[0].cpu()].cuda()

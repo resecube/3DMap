@@ -7,20 +7,21 @@ from dataset.constants import SCANNET_LABELS, SCANNET_IDS
 
 class ScanNetDataset:
 
-    def __init__(self, data_root, seq_name) -> None:
+    def __init__(self, data_root, seq_name,output_dir) -> None:
         self.seq_name = seq_name
+        self.output_dir = output_dir+f"/{seq_name}"
         self.root = f"{data_root}/{seq_name}"
         self.rgb_dir = f"{self.root}/color"
         self.depth_dir = f"{self.root}/depth"
-        self.segmentation_dir = f"{self.root}/output/mask"
-        self.object_dict_dir = f"{self.root}/object_dict.npy"
+        self.segmentation_dir = f"{self.output_dir}/mask"
+        self.object_dict_dir = f"{self.output_dir}/object_dict.npy"
         self.point_cloud_path = f"{self.root}/{seq_name}_vh_clean_2.ply"
         self.mesh_path = self.point_cloud_path
         self.extrinsics_dir = f"{self.root}/pose"
         self.intrinsic_dir = f"{self.root}/intrinsic"
-        self.feature_path = f"{self.root}/mask_features.pkl"
-        self.label_path = f"{self.root}/mask_labels.pkl"
-
+        self.feature_path = f"{self.output_dir}/mask_features.pkl"
+        self.label_path = f"{self.output_dir}/mask_labels.pkl"
+        self.instance_path = f"{self.output_dir}/instances.pth"
         self.depth_scale = 1000.0
         self.image_size = (640, 480)
         self.mesh = None

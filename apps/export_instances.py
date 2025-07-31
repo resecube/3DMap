@@ -1,7 +1,7 @@
 import hydra
 from omegaconf import DictConfig
 from tqdm import tqdm
-from utils.ovutils import construct_instances
+from utils.ovutils import construct_instances, get_semantic_info
 from dataset.matterport import MatterportDataset
 from dataset.scannet import ScanNetDataset
 import numpy as np
@@ -26,12 +26,12 @@ def export_instances(cfg: DictConfig):
     for seq_name in tqdm(cfg.splits.seq_name_list):
         cfg.seq_name = seq_name
         dataset = (
-            ScanNetDataset(cfg.dataset.data_root, cfg.seq_name)
+            ScanNetDataset(cfg.dataset.data_root, cfg.seq_name,cfg.dataset.output_dir)
             if cfg.dataset.name == "scannet"
             else MatterportDataset(cfg.dataset.data_root, cfg.seq_name)
         )
-        object_dict = np.load(cfg.object_dict_path, allow_pickle=True).item()
-        feature_dict = torch.load(cfg.clip_features_save_path)
+        object_dict = np.load(dataset.object_dict_dir, allow_pickle=True).item()
+        feature_dict = torch.load(dataset.feature_path)
         label_features = torch.load(cfg.dataset.label_feature_save_path)
         instances = construct_instances(
             object_dict,
@@ -41,7 +41,17 @@ def export_instances(cfg: DictConfig):
             target_labels,
             target_ids,
         )
-        torch.save(instances, cfg.instances_save_path)
+        pred_semantic_dict = get_semantic_info(
+            object_dict,
+            dataset.get_scene_points().shape[0],
+            feature_dict,
+            label_features,
+            SCANNET_LABELS,
+            dataset.get_label_id()[0],
+            cfg,
+        )
+        np.savez(f"{cfg.semantic_info_path}/{seq_name}.npz", **pred_semantic_dict)
+        torch.save(instances, dataset.instance_path)
 
 if __name__ == "__main__": 
     export_instances()

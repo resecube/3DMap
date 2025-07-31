@@ -3,7 +3,8 @@ from copy import deepcopy
 import numpy as np
 import torch
 from evaluation.utils_3d import get_instances
-
+import hydra
+from omegaconf import DictConfig, OmegaConf
 
 # ---------- Label info ---------- #
 from dataset.constants import (
@@ -20,44 +21,17 @@ ID_TO_LABEL = {}
 LABEL_TO_ID = {}
 CLASS_LABELS = []
 VALID_CLASS_IDS = []
-
-parser = argparse.ArgumentParser()
-parser.add_argument('--pred_path', required=True, help='path to directory of predicted .txt files')
-parser.add_argument('--gt_path', required=True, help='path to directory of ground truth .txt files')
-parser.add_argument('--dataset', required=True, help='type of dataset, e.g. matterport3d, scannet, etc.')
-parser.add_argument('--output_file', default='', help='path to output file')
-parser.add_argument('--no_class', action='store_true', help='class agnostic evaluation')
-opt = parser.parse_args()
-
-if opt.dataset == 'matterport3d':
-    CLASS_LABELS = MATTERPORT_LABELS
-    VALID_CLASS_IDS = MATTERPORT_IDS
-elif opt.dataset == 'scannet':
-    CLASS_LABELS = SCANNET_LABELS
-    VALID_CLASS_IDS = SCANNET_IDS
-
-if opt.output_file == '':
-    opt.output_file = f'{opt.pred_path}/eval.txt'
-    os.makedirs(os.path.dirname(opt.output_file), exist_ok=True)
-if opt.no_class:
-    if 'class_agnostic' not in opt.output_file:
-        opt.output_file = opt.output_file.replace('.txt', '_class_agnostic.txt')
-
 ID_TO_LABEL = {}
 LABEL_TO_ID = {}
-for i in range(len(VALID_CLASS_IDS)):
-    LABEL_TO_ID[CLASS_LABELS[i]] = VALID_CLASS_IDS[i]
-    ID_TO_LABEL[VALID_CLASS_IDS[i]] = CLASS_LABELS[i]
+# parser = argparse.ArgumentParser()
+# parser.add_argument('--pred_path', required=True, help='path to directory of predicted .txt files')
+# parser.add_argument('--gt_path', required=True, help='path to directory of ground truth .txt files')
+# parser.add_argument('--dataset', required=True, help='type of dataset, e.g. matterport3d, scannet, etc.')
+# parser.add_argument('--output_file', default='', help='path to output file')
+# parser.add_argument('--no_class', action='store_true', help='class agnostic evaluation')
+# opt = parser.parse_args()
 
-# ---------- Evaluation params ---------- #
-# overlaps for evaluation
-opt.overlaps             = np.append(np.arange(0.5,0.95,0.05), 0.25)
-# minimum region size for evaluation [verts]
-opt.min_region_sizes     = np.array( [ 100 ] )
-# distance thresholds [m]
-opt.distance_threshes    = np.array( [  float('inf') ] )
-# distance confidences
-opt.distance_confs       = np.array( [ -float('inf') ] )
+
 
 def evaluate_matches(matches, opt):
     overlaps = opt.overlaps
@@ -519,24 +493,78 @@ def eval(opt):
 
     evaluate(pred_files, gt_files, opt.output_file, opt)
     print("save results to", opt.output_file)
+    
 
+@hydra.main(
+    config_path="../conf", config_name="evaluate.yaml", version_base="1.3"
+)
+def main_eval(config:DictConfig):
+    # config
+    opt = argparse.Namespace()
+    opt.pred_path = config.pred_path
+    opt.gt_path = config.gt_path
+    opt.output_file = config.output_file
+    opt.dataset = config.dataset
+    opt.no_class = config.no_class
+    
+    if opt.output_file == "":
+        opt.output_file = f"{opt.pred_path}/eval.txt"
+        os.makedirs(os.path.dirname(opt.output_file), exist_ok=True)
+    if opt.no_class:
+        if "class_agnostic" not in opt.output_file:
+            opt.output_file = opt.output_file.replace(".txt", "_class_agnostic.txt")
+    global CLASS_LABELS, VALID_CLASS_IDS, LABEL_TO_ID, ID_TO_LABEL
+    if opt.dataset == "matterport3d":
+        CLASS_LABELS = MATTERPORT_LABELS
+        VALID_CLASS_IDS = MATTERPORT_IDS
+    elif opt.dataset == "scannet":
+        CLASS_LABELS = SCANNET_LABELS
+        VALID_CLASS_IDS = SCANNET_IDS
+    elif opt.dataset == "scannetpp":
+        CLASS_LABELS = SCANNETPP_LABELS
+        VALID_CLASS_IDS = SCANNETPP_IDS
 
-def main():
+    for i in range(len(VALID_CLASS_IDS)):
+        LABEL_TO_ID[CLASS_LABELS[i]] = VALID_CLASS_IDS[i]
+        ID_TO_LABEL[VALID_CLASS_IDS[i]] = CLASS_LABELS[i]
+
+    # overlaps for evaluation
+    opt.overlaps = np.append(np.arange(0.5, 0.95, 0.05), 0.25)
+    # minimum region size for evaluation [verts]
+    opt.min_region_sizes = np.array([100])
+    # distance thresholds [m]
+    opt.distance_threshes = np.array([float("inf")])
+    # distance confidences
+    opt.distance_confs = np.array([-float("inf")])
+    
     print('start evaluating:', opt.pred_path.split('/')[-1])
     pred_files = [f for f in sorted(os.listdir(opt.pred_path)) if f.endswith('.npz') and not f.startswith('semantic_instance_evaluation')]
     gt_files = []
-
     for i in range(len(pred_files)):
         gt_file = os.path.join(opt.gt_path, pred_files[i].replace('.npz', '.txt'))
         if not os.path.isfile(gt_file):
             print('Result file {} does not match any gt file'.format(pred_files[i]))
             raise NotImplementedError
-
         gt_files.append(gt_file)
         pred_files[i] = os.path.join(opt.pred_path, pred_files[i])
+    evaluate(pred_files, gt_files, opt.output_file, opt)
+        
+# def main():
+#     print('start evaluating:', opt.pred_path.split('/')[-1])
+#     pred_files = [f for f in sorted(os.listdir(opt.pred_path)) if f.endswith('.npz') and not f.startswith('semantic_instance_evaluation')]
+#     gt_files = []
 
-    evaluate(pred_files, gt_files, opt.pred_path, opt.output_file)
-    print('save results to', opt.output_file)
+#     for i in range(len(pred_files)):
+#         gt_file = os.path.join(opt.gt_path, pred_files[i].replace('.npz', '.txt'))
+#         if not os.path.isfile(gt_file):
+#             print('Result file {} does not match any gt file'.format(pred_files[i]))
+#             raise NotImplementedError
+
+#         gt_files.append(gt_file)
+#         pred_files[i] = os.path.join(opt.pred_path, pred_files[i])
+
+#     evaluate(pred_files, gt_files, opt.pred_path, opt.output_file)
+#     print('save results to', opt.output_file)
 
 if __name__ == '__main__':
-    main()
+    main_eval()

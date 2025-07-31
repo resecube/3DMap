@@ -13,7 +13,7 @@ def setup_graph(cfg):
     for seq_name in tqdm(cfg.splits.seq_name_list):
         cfg.seq_name = seq_name
         dataset = (
-            ScanNetDataset(cfg.dataset.data_root, cfg.seq_name)
+            ScanNetDataset(cfg.dataset.data_root, cfg.seq_name, cfg.dataset.output_dir)
             if cfg.dataset.name == "scannet"
             else MatterportDataset(cfg.dataset.data_root, cfg.seq_name)
         )
@@ -26,8 +26,9 @@ def setup_graph(cfg):
         mask_features = {
             k: [torch.tensor(f).cpu() for f in v] for k, v in mask_features.items()
         }
+        print(f"Number of frames: {len(mask_features)}")
         graph = Graph(cfg, mask_features, dataset)
-        np.save(cfg.object_dict_path, graph.object_dict, allow_pickle=True)
+        np.save(dataset.object_dict_dir, graph.object_dict, allow_pickle=True)
 
 if __name__ == "__main__":
     setup_graph()
