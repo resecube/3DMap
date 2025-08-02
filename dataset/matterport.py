@@ -7,6 +7,7 @@ from dataset.constants import MATTERPORT_LABELS, MATTERPORT_IDS
 class MatterportDataset:
     def __init__(self, root_path, seq_name) -> None:
         self.seq_name = seq_name
+        self.output_dir = f'/root/autodl-tmp/3DMap/outputs/mp3d9_outputs/{seq_name}'
         self.root = f'{root_path}/{seq_name}'
         self.rgb_dir = f'{self.root}/undistorted_color_images'
         self.depth_dir = f'{self.root}/undistorted_depth_images'
@@ -15,12 +16,11 @@ class MatterportDataset:
         self.mesh_path = self.point_cloud_path
         self.rgb_names, self.depth_names, self.intrinsics, self.extrinsics = \
             self._obtain_intr_extr()
-        self.feature_path = f'{self.root}/mask_features.pkl'
-        
-        # output
         self.segmentation_dir = f'{self.root}/output/mask/'
-        self.object_dict_dir = f'{self.root}/object_dict.npy'
-
+        self.feature_path = f'{self.root}/output/mask_features.pkl'
+        self.object_dict_dir = f'{self.output_dir}/object_dict.npy'
+        self.clip_feature_path = f"{self.output_dir}/open_vocabulary_features.pth"
+        self.instance_path = f"{self.output_dir}/instances.pth"
         self.depth_scale = 4000.0 # (0.25mm per unit) 1u = 1/4000 m
         self.image_size = (1280, 1024)
 

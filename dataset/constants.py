@@ -1,6 +1,6 @@
 MATTERPORT_LABELS = [
-    "wall",
-    "floor",
+    # "wall",
+    # "floor",
     "door",
     "picture",
     "window",
@@ -483,8 +483,8 @@ MATTERPORT_LABEL_DESCRIPTIONS = [
 ]
 
 MATTERPORT_IDS = [
-    21,
-    11,
+    # 21,
+    # 11,
     28,
     64,
     59,

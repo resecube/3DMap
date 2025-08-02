@@ -31,7 +31,7 @@ def export_instances(cfg: DictConfig):
             else MatterportDataset(cfg.dataset.data_root, cfg.seq_name)
         )
         object_dict = np.load(dataset.object_dict_dir, allow_pickle=True).item()
-        feature_dict = torch.load(dataset.feature_path)
+        feature_dict = torch.load(dataset.clip_feature_path)
         label_features = torch.load(cfg.dataset.label_feature_save_path)
         instances = construct_instances(
             object_dict,
@@ -46,7 +46,7 @@ def export_instances(cfg: DictConfig):
             dataset.get_scene_points().shape[0],
             feature_dict,
             label_features,
-            SCANNET_LABELS,
+            target_labels,
             dataset.get_label_id()[0],
             cfg,
         )

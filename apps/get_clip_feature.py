@@ -171,7 +171,7 @@ def get_clip_features(cfg, object_dict, dataset, model, preprocess):
                 feature_dict[f"{frame_ids[i]}_{mask_ids[i]}"] = image_features[
                     CROP_SCALES * i : CROP_SCALES * (i + 1)
                 ].mean(axis=0)
-            torch.save(feature_dict, dataset.feature_path)
+            torch.save(feature_dict, dataset.clip_feature_path)
 
 
 @hydra.main(

@@ -13,14 +13,17 @@ class ScanNetDataset:
         self.root = f"{data_root}/{seq_name}"
         self.rgb_dir = f"{self.root}/color"
         self.depth_dir = f"{self.root}/depth"
-        self.segmentation_dir = f"{self.output_dir}/mask"
-        self.object_dict_dir = f"{self.output_dir}/object_dict.npy"
+        
+        
         self.point_cloud_path = f"{self.root}/{seq_name}_vh_clean_2.ply"
         self.mesh_path = self.point_cloud_path
         self.extrinsics_dir = f"{self.root}/pose"
         self.intrinsic_dir = f"{self.root}/intrinsic"
+        self.segmentation_dir = f"{self.output_dir}/mask"
         self.feature_path = f"{self.output_dir}/mask_features.pkl"
         self.label_path = f"{self.output_dir}/mask_labels.pkl"
+        self.object_dict_dir = f"{self.output_dir}/object_dict.npy"
+        self.clip_feature_path = f"{self.output_dir}/open_vocabulary_features.pth"
         self.instance_path = f"{self.output_dir}/instances.pth"
         self.depth_scale = 1000.0
         self.image_size = (640, 480)
