@@ -15,3 +15,4 @@ ckpt/
 /.vscode
 __pycache__/
 /backup
+/apps/*map*
